@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Arunachal Pradesh Tourist Cards</title>
+<link rel="stylesheet" href="../../ScrollBar.css">
+<link rel="stylesheet" href="../../RightStyle.css">
+<link rel="stylesheet" href="../../CardStyle.css">
+
+
+<style>
+
+/* ⭐ STAR */
+.star {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 10;
+    color: white;
+    transition: 0.3s;
+}
+
+.card-back .star {
+    color: black;
+}
+
+.star.active {
+    color: gold;
+}
+
+
+
+/* Card styles */
+
+.card-front.Mechuka {
+    background: 
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        url("Mechuka.jpg");
+
+    background-size: cover;
+    background-position: center 45%;
+    background-repeat: no-repeat;
+}
+
+.card-front.NamdaphaNationalPark {
+    background: 
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        url("NamdaphaNationalPark.jpg");
+
+    background-size: cover;
+    background-position: center 45%;
+    background-repeat: no-repeat;
+}
+
+.card-front.Tawang {
+    background: 
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        url("Tawang.jpg");
+
+    background-size: cover;
+    background-position: center 45%;
+    background-repeat: no-repeat;
+}
+
+.card-front.ZiroValley {
+    background: 
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        url("ZiroValley.jpg");
+
+    background-size: cover;
+    background-position: center 45%;
+    background-repeat: no-repeat;
+}
+
+</style>
+</head>
+
+<body>
+  <div class="right-section">
+<div class="right-title">Top Spots</div>
+
+<div class="container">
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-front Mechuka">
+        <div class="star" data-id="Mechuka">&#9734;</div>
+        Mechuka
+      </div>
+      <div class="card-back">
+        <div class="star" data-id="Mechuka">&#9734;</div>
+        <a href="Mechuka.html" target="content_frame">View Info</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-front NamdaphaNationalPark">
+        <div class="star" data-id="NamdaphaNationalPark">&#9734;</div>
+        Namdapha National Park
+      </div>
+      <div class="card-back">
+        <div class="star" data-id="NamdaphaNationalPark">&#9734;</div>
+        <a href="NamdaphaNationalPark.html" target="content_frame">View Info</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-front Tawang">
+        <div class="star" data-id="Tawang">&#9734;</div>
+        Tawang
+      </div>
+      <div class="card-back">
+        <div class="star" data-id="Tawang">&#9734;</div>
+        <a href="Tawang.html" target="content_frame">View Info</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-front ZiroValley">
+        <div class="star" data-id="ZiroValley">&#9734;</div>
+        Ziro Valley
+      </div>
+      <div class="card-back">
+        <div class="star" data-id="ZiroValley">&#9734;</div>
+        <a href="ZiroValley.html" target="content_frame">View Info</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+<script>
+// ===== USER & KEY =====
+const currentUser = localStorage.getItem("currentUser");
+const key = currentUser ? "myStars_" + currentUser : null;
+
+// ===== LOAD SAVED =====
+let saved = key ? JSON.parse(localStorage.getItem(key)) || [] : [];
+
+// ===== INIT ALL STARS =====
+const stars = document.querySelectorAll(".star");
+
+stars.forEach(star => {
+  const id = star.getAttribute("data-id");
+
+  // initial fill
+  if (saved.includes(id)) {
+    star.textContent = "★";
+    star.classList.add("active");
+  } else {
+    star.textContent = "☆";
+    star.classList.remove("active");
+  }
+
+  // click
+  star.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    if (!key) {
+      alert("Please login first");
+      return;
+    }
+
+    const isActive = saved.includes(id);
+
+    if (isActive) {
+      saved = saved.filter(x => x !== id);
+    } else {
+      saved.push(id);
+    }
+
+    // update all matching stars (front/back)
+    document.querySelectorAll(`.star[data-id="${id}"]`).forEach(s => {
+      if (isActive) {
+        s.textContent = "☆";
+        s.classList.remove("active");
+      } else {
+        s.textContent = "★";
+        s.classList.add("active");
+      }
+    });
+
+    // save per user
+    localStorage.setItem(key, JSON.stringify(saved));
+  });
+});
+</script>
+
+
+</body>
+</html>
